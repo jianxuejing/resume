@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>简历 — 全栈开发 / 前端架构师</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@400;500&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --forest:   #1b3a2f;
+      --forest-d: #122619;
+      --forest-l: #2c5a47;
+      --gold:     #c9a84c;
+      --gold-l:   #e4c47a;
+      --gold-pale:#f5ead0;
+      --cream:    #faf8f4;
+      --paper:    #ffffff;
+      --ink:      #1a2118;
+      --mid:      #4a5e54;
+      --faint:    #8a9e94;
+      --rule:     #dde8e2;
+      --side-bg:  #f4f8f5;
+      --shadow:   0 32px 80px rgba(27,58,47,0.13), 0 2px 8px rgba(27,58,47,0.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scanline {
+      0%   { transform: translateY(-100%); }
+      100% { transform: translateY(400%); }
+    }
+
+    body {
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 0%, rgba(27,58,47,0.09) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 85% 100%, rgba(201,168,76,0.07) 0%, transparent 55%),
+        var(--cream);
+      color: var(--ink);
+      font-family: "Noto Serif SC", Georgia, serif;
+      font-weight: 300;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: 56px auto;
+      background: var(--paper);
+      border-radius: 4px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      animation: fadeUp 0.65s cubic-bezier(.22,.68,0,1.1) both;
+    }
+
+    /* ══ HERO ══ */
+    .hero {
+      background: linear-gradient(135deg, var(--forest-d) 0%, var(--forest) 55%, var(--forest-l) 100%);
+      padding: 56px 64px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* grid dot pattern */
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(201,168,76,0.18) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+
+    /* right glow orb */
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      top: -80px;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.06) 40%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* scan line */
+    .hero .scanline {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero .scanline::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.20), transparent);
+      animation: scanline 5s linear infinite;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .name {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(42px, 6vw, 62px);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: #e8f0ff;
+      line-height: 1.05;
+      margin-bottom: 14px;
+    }
+
+    .name em {
+      font-style: italic;
+      color: var(--gold-l);
+    }
+
+    .role-strip {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .role-strip::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: var(--gold);
+      box-shadow: 0 0 6px var(--gold);
+    }
+
+    .role-text {
+      font-family: "DM Mono", monospace;
+      font-size: 11.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(228,196,122,0.85);
+    }
+
+    .summary-hero {
+      max-width: 680px;
+      font-size: 14.5px;
+      line-height: 1.9;
+      color: rgba(240,235,224,0.82);
+      margin-bottom: 32px;
+    }
+
+    .contacts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .contact-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 2px;
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      color: rgba(240,235,224,0.72);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(6px);
+    }
+
+    /* ══ BODY ══ */
+    .body {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      background: var(--side-bg);
+      border-right: 1px solid var(--rule);
+      padding: 48px 28px 48px 36px;
+    }
+
+    .side-section + .side-section {
+      margin-top: 38px;
+      padding-top: 38px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .side-label {
+      font-family: "DM Mono", monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .side-label::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--gold-pale), transparent);
+    }
+
+    /* advantages */
+    .adv-list { list-style: none; }
+
+    .adv-list li {
+      font-size: 12.5px;
+      color: var(--mid);
+      line-height: 1.75;
+      padding-left: 14px;
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .adv-list li::before {
+      content: "◆";
+      position: absolute;
+      left: 0;
+      font-size: 5px;
+      top: 7px;
+      color: var(--gold);
+    }
+
+    /* edu */
+    .edu-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .edu-detail {
+      font-size: 12px;
+      color: var(--faint);
+      line-height: 1.7;
+    }
+
+    /* ai */
+    .ai-list { list-style: none; }
+
+    .ai-list li {
+      font-size: 12.5px;
+      color: var(--mid);
+      line-height: 1.75;
+      padding-left: 14px;
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .ai-list li::before {
+      content: "▸";
+      position: absolute;
+      left: 0;
+      color: var(--forest-l);
+      font-size: 11px;
+    }
+
+    /* ── Main ── */
+    .main {
+      padding: 48px 52px 52px;
+    }
+
+    .main-section + .main-section {
+      margin-top: 44px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .section-head h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--forest);
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--rule), transparent);
+    }
+
+    .section-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 6px rgba(201,168,76,0.5);
+      flex-shrink: 0;
+    }
+
+    /* jobs */
+    .job + .job {
+      margin-top: 32px;
+      padding-top: 32px;
+      border-top: 1px dashed var(--rule);
+    }
+
+    .job-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+      gap: 16px;
+    }
+
+    .job-company {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--forest-d);
+      letter-spacing: 0.02em;
+    }
+
+    .job-date {
+      font-family: "DM Mono", monospace;
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      padding: 2px 10px;
+      border: 1px solid var(--gold-pale);
+      border-radius: 2px;
+      background: #fffdf6;
+      flex-shrink: 0;
+    }
+
+    .job-role {
+      font-size: 13px;
+      color: var(--faint);
+      margin-bottom: 14px;
+      letter-spacing: 0.02em;
+    }
+
+    .bullets { list-style: none; }
+
+    .bullets li {
+      font-size: 13.5px;
+      color: #3a4e44;
+      line-height: 1.8;
+      padding-left: 18px;
+      position: relative;
+      margin-bottom: 7px;
+    }
+
+    .bullets li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 6px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    /* ── Footer strip ── */
+    .footer-strip {
+      height: 4px;
+      background: linear-gradient(90deg, var(--forest-d), var(--forest-l) 50%, var(--gold) 100%);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 780px) {
+      .page { margin: 0; border-radius: 0; }
+      .hero { padding: 36px 24px 32px; }
+      .body { grid-template-columns: 1fr; }
+      .sidebar { border-right: none; border-bottom: 1px solid var(--rule); padding: 32px 24px; }
+      .main { padding: 32px 24px 40px; }
+      .job-head { flex-direction: column; gap: 8px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { margin: 0; box-shadow: none; border-radius: 0; }
+      .hero { padding: 36px 42px 30px; }
+      .body { grid-template-columns: 200px 1fr; }
+      .main { padding: 36px 42px 42px; }
+      .sidebar { padding: 36px 24px 36px 32px; }
+      .hero .scanline { display: none; }
+    }
+  </style>
+</head>
+<body>
+<main class="page">
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="scanline"></div>
+    <div class="hero-inner">
+      <h1 class="name"><em>曹</em>鑫</h1>
+      <div class="role-strip">
+        <div class="role-text">全栈开发工程师 &nbsp;·&nbsp; 前端架构师</div>
+      </div>
+      <p class="summary-hero">
+        15年+ 软件开发经验，具备 React / TypeScript 前端架构、Node.js / Java 后端开发与基础部署运维能力。曾在腾讯云智担任部门长沙前端负责人，带领最多 14 人前端团队，主导微前端改造、部署流程优化、组件库建设与 Node.js 接入层落地。熟练使用 Figma 进行产品原型设计，曾从 0 落地 BiuPa 页面效果平台。近期持续实践 AI 编程工作流，熟练使用 Cursor、Claude Code、Codex 等工具。
+      </p>
+      <div class="contacts">
+        <span class="contact-pill">📞 18684965870</span>
+        <span class="contact-pill">✉️ jianxue_jing@qq.com</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Body -->
+  <div class="body">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+      <div class="side-section">
+        <div class="side-label">核心优势</div>
+        <ul class="adv-list">
+          <li>全栈型技术背景，兼具前端架构、后端开发与基础运维能力。</li>
+          <li>具备产品到技术的完整落地能力，可独立推进全流程交付。</li>
+          <li>长期负责前端工程化建设，熟悉微前端、组件库与部署平台。</li>
+          <li>最多 14 人团队管理经验，能推动规范在多项目中有效落地。</li>
+        </ul>
+      </div>
+
+      <div class="side-section">
+        <div class="side-label">AI 编程实践</div>
+        <ul class="ai-list">
+          <li>熟练使用 Cursor、Claude Code、Codex 辅助需求拆解、代码生成与重构。</li>
+          <li>持续使用国内外主流大模型，了解其在代码与前端场景中的实践表现。</li>
+          <li>本地搭建并体验 Gemma 等开源模型，了解本地推理环境配置。</li>
+        </ul>
+      </div>
+
+      <div class="side-section">
+        <div class="side-label">教育背景</div>
+        <div class="edu-name">中南林业科技大学</div>
+        <div class="edu-detail">
+          计算机科学与技术<br />
+          本科 · 2009年毕业
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- Main -->
+    <div class="main">
+
+      <div class="main-section">
+        <div class="section-head">
+          <div class="section-dot"></div>
+          <h2>工作经历</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div class="job">
+          <div class="job-head">
+            <div class="job-company">腾讯云智</div>
+            <div class="job-date">2019 — 2025</div>
+          </div>
+          <div class="job-role">部门长沙前端负责人</div>
+          <ul class="bullets">
+            <li>负责长沙前端团队技术建设与架构规划，团队规模最多 14 人，统筹工程规范制定与项目交付管理。</li>
+            <li>主导 BiuPa 页面效果平台从 0 到 1 落地，覆盖产品原型、架构设计、核心开发与上线运维全流程。</li>
+            <li>主导业务平台微前端改造，基于 qiankun 实现模块独立开发、构建与发布，显著降低系统维护复杂度。</li>
+            <li>重新梳理并规划部门前端部署流程，提升发布效率、稳定性与异常容错能力。</li>
+            <li>创建部门前端脚手架工具，统一 React / TypeScript 项目初始化与工程配置，提升新项目启动效率。</li>
+            <li>基于 TDesign 搭建组件库规范与共建机制，推动通用组件沉淀、复用与协同维护。</li>
+            <li>持续推动 Node.js 接入层在多项目中的落地，完成从技术方案到上线交付的完整闭环。</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="job-head">
+            <div class="job-company">湖南科创信息股份有限公司</div>
+            <div class="job-date">2011 — 2019</div>
+          </div>
+          <div class="job-role">前端负责人 / Java 开发工程师</div>
+          <ul class="bullets">
+            <li>早期担任 Java 开发工程师，参与电子政务业务系统研发，积累复杂业务建模与后端接口开发经验。</li>
+            <li>后转岗基础软件研究院，从 0 搭建前端团队，建立开发流程、技术选型与代码规范体系。</li>
+            <li>深度参与科创专有云平台、内部服务开放平台等核心项目的前端架构设计与核心模块开发。</li>
+            <li>协同后端、产品、测试与实施团队推进项目交付，具备从需求到上线的完整项目经验。</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer-strip"></div>
+</main>
+</body>
+</html>
