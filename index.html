@@ -4,160 +4,232 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>简历 — 全栈开发 / 前端架构师</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@400;500&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --forest:   #1b3a2f;
-      --forest-d: #122619;
-      --forest-l: #2c5a47;
-      --gold:     #c9a84c;
-      --gold-l:   #e4c47a;
-      --gold-pale:#f5ead0;
-      --cream:    #faf8f4;
-      --paper:    #ffffff;
-      --ink:      #1a2118;
-      --mid:      #4a5e54;
-      --faint:    #8a9e94;
-      --rule:     #dde8e2;
-      --side-bg:  #f4f8f5;
-      --shadow:   0 32px 80px rgba(27,58,47,0.13), 0 2px 8px rgba(27,58,47,0.06);
+      --bg:        #040d12;
+      --bg2:       #071520;
+      --bg3:       #0a1e2e;
+      --panel:     #061018;
+      --cyan:      #00ffe1;
+      --cyan-dim:  #00c4ae;
+      --cyan-faint:#003d38;
+      --blue:      #0af;
+      --blue-dim:  #0077bb;
+      --amber:     #ffb800;
+      --amber-dim: #c48a00;
+      --red:       #ff4466;
+      --text:      #c8e8e0;
+      --text-dim:  #6a9a90;
+      --text-faint:#2a5048;
+      --border:    #0d3028;
+      --border2:   #0f2a40;
+      --grid-size: 40px;
+      --glow-c:    0 0 8px #00ffe188, 0 0 20px #00ffe133;
+      --glow-b:    0 0 8px #0aaffe88, 0 0 20px #0aaffe33;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes scanline {
+    @keyframes scan {
       0%   { transform: translateY(-100%); }
-      100% { transform: translateY(400%); }
+      100% { transform: translateY(200vh); }
     }
 
+    @keyframes blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    @keyframes pulse-border {
+      0%, 100% { border-color: var(--cyan-dim); box-shadow: var(--glow-c); }
+      50%       { border-color: var(--cyan); box-shadow: 0 0 16px #00ffe1cc, 0 0 40px #00ffe155; }
+    }
+
+    @keyframes flicker {
+      0%,96%,100% { opacity: 1; }
+      97%          { opacity: 0.7; }
+      98%          { opacity: 1; }
+      99%          { opacity: 0.85; }
+    }
+
+    html { background: var(--bg); }
+
     body {
-      background:
-        radial-gradient(ellipse 80% 60% at 20% 0%, rgba(27,58,47,0.09) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 50% at 85% 100%, rgba(201,168,76,0.07) 0%, transparent 55%),
-        var(--cream);
-      color: var(--ink);
-      font-family: "Noto Serif SC", Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Noto Sans SC", sans-serif;
       font-weight: 300;
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
+      /* global grid texture */
+      background-image:
+        linear-gradient(rgba(0,255,225,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,225,0.025) 1px, transparent 1px);
+      background-size: var(--grid-size) var(--grid-size);
+    }
+
+    /* ── global scan line ── */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      pointer-events: none;
+      background: linear-gradient(transparent 50%, rgba(0,0,0,0.04) 50%);
+      background-size: 100% 4px;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      left: 0; right: 0;
+      height: 120px;
+      background: linear-gradient(transparent, rgba(0,200,180,0.04), transparent);
+      animation: scan 8s linear infinite;
+      pointer-events: none;
+      z-index: 999;
     }
 
     .page {
-      max-width: 900px;
-      margin: 56px auto;
-      background: var(--paper);
-      border-radius: 4px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      animation: fadeUp 0.65s cubic-bezier(.22,.68,0,1.1) both;
+      max-width: 960px;
+      margin: 40px auto 60px;
+      animation: fadeIn 0.7s ease both;
+      position: relative;
     }
+
+    /* corner decorations */
+    .page::before, .page::after {
+      content: "";
+      position: absolute;
+      width: 24px; height: 24px;
+      border-color: var(--cyan);
+      border-style: solid;
+      z-index: 10;
+    }
+    .page::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+    .page::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
 
     /* ══ HERO ══ */
     .hero {
-      background: linear-gradient(135deg, var(--forest-d) 0%, var(--forest) 55%, var(--forest-l) 100%);
-      padding: 56px 64px 48px;
+      background: linear-gradient(160deg, #071e30 0%, #040d12 60%, #071a14 100%);
+      padding: 56px 60px 48px;
       position: relative;
       overflow: hidden;
+      border: 1px solid var(--border2);
+      border-bottom: none;
     }
 
-    /* grid dot pattern */
+    /* circuit traces */
     .hero::before {
       content: "";
       position: absolute;
       inset: 0;
       background-image:
-        radial-gradient(circle, rgba(201,168,76,0.18) 1px, transparent 1px);
-      background-size: 28px 28px;
+        linear-gradient(rgba(0,255,225,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,225,0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
       pointer-events: none;
     }
 
-    /* right glow orb */
-    .hero::after {
-      content: "";
+    /* top-right HUD corner decoration */
+    .hero-hud {
       position: absolute;
-      right: -80px;
-      top: -80px;
-      width: 360px;
-      height: 360px;
+      top: 20px; right: 24px;
+      font-family: "Share Tech Mono", monospace;
+      font-size: 10px;
+      color: var(--text-faint);
+      line-height: 1.8;
+      text-align: right;
+    }
+
+    .hero-hud .hud-live {
+      color: var(--cyan-dim);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .hud-dot {
+      width: 6px; height: 6px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.06) 40%, transparent 70%);
-      pointer-events: none;
+      background: var(--cyan);
+      box-shadow: var(--glow-c);
+      animation: blink 1.4s step-end infinite;
     }
 
-    /* scan line */
-    .hero .scanline {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-      z-index: 0;
+    .hero-inner { position: relative; z-index: 1; }
+
+    /* "SYS_ID" label */
+    .sys-id {
+      font-family: "Share Tech Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--cyan-dim);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .hero .scanline::after {
+    .sys-id::before {
       content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.20), transparent);
-      animation: scanline 5s linear infinite;
-    }
-
-    .hero-inner {
-      position: relative;
-      z-index: 1;
+      display: inline-block;
+      width: 4px; height: 4px;
+      background: var(--cyan);
+      box-shadow: var(--glow-c);
     }
 
     .name {
-      font-family: "Cormorant Garamond", serif;
-      font-size: clamp(42px, 6vw, 62px);
-      font-weight: 300;
-      letter-spacing: 0.05em;
-      color: #e8f0ff;
-      line-height: 1.05;
-      margin-bottom: 14px;
+      font-family: "Rajdhani", sans-serif;
+      font-size: clamp(48px, 7vw, 72px);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      margin-bottom: 6px;
+      color: var(--text);
+      text-shadow: 0 0 30px rgba(0,255,225,0.15);
     }
 
-    .name em {
-      font-style: italic;
-      color: var(--gold-l);
+    .name .name-cn {
+      color: var(--cyan);
+      text-shadow: var(--glow-c);
+      animation: flicker 7s linear infinite;
     }
 
     .role-strip {
       display: flex;
       align-items: center;
-      gap: 14px;
-      margin-bottom: 28px;
+      gap: 12px;
+      margin: 16px 0 28px;
     }
 
-    .role-strip::before {
-      content: "";
-      width: 28px;
-      height: 1px;
-      background: var(--gold);
-      box-shadow: 0 0 6px var(--gold);
+    .role-bracket {
+      font-family: "Share Tech Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      color: var(--text-dim);
     }
 
-    .role-text {
-      font-family: "DM Mono", monospace;
-      font-size: 11.5px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(228,196,122,0.85);
+    .role-bracket span {
+      color: var(--amber);
     }
 
     .summary-hero {
-      max-width: 680px;
-      font-size: 14.5px;
-      line-height: 1.9;
-      color: rgba(240,235,224,0.82);
-      margin-bottom: 32px;
+      max-width: 700px;
+      font-size: 13.5px;
+      line-height: 2;
+      color: var(--text-dim);
+      margin-bottom: 36px;
+      border-left: 2px solid var(--cyan-faint);
+      padding-left: 18px;
     }
 
     .contacts {
@@ -169,238 +241,274 @@
     .contact-pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 5px 14px;
-      border: 1px solid rgba(201,168,76,0.35);
-      border-radius: 2px;
-      font-family: "DM Mono", monospace;
-      font-size: 11px;
-      letter-spacing: 0.05em;
-      color: rgba(240,235,224,0.72);
-      background: rgba(255,255,255,0.04);
-      backdrop-filter: blur(6px);
+      gap: 8px;
+      padding: 6px 16px;
+      border: 1px solid var(--border2);
+      font-family: "Share Tech Mono", monospace;
+      font-size: 11.5px;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      background: rgba(0,255,225,0.03);
+      position: relative;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
     }
+
+    .contact-pill::before {
+      content: "›";
+      color: var(--cyan);
+      font-size: 14px;
+    }
+
+    /* ══ STATUS BAR ══ */
+    .status-bar {
+      background: var(--bg2);
+      border-top: 1px solid var(--border2);
+      border-left: 1px solid var(--border2);
+      border-right: 1px solid var(--border2);
+      padding: 6px 20px;
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      font-family: "Share Tech Mono", monospace;
+      font-size: 9.5px;
+      color: var(--text-faint);
+      letter-spacing: 0.1em;
+    }
+
+    .status-bar .sb-item { display: flex; align-items: center; gap: 6px; }
+    .status-bar .sb-active { color: var(--cyan-dim); }
+    .status-bar .sb-sep { color: var(--text-faint); opacity: 0.4; }
+    .status-bar .sb-right { margin-left: auto; }
 
     /* ══ BODY ══ */
     .body {
       display: grid;
-      grid-template-columns: 220px 1fr;
+      grid-template-columns: 240px 1fr;
+      border: 1px solid var(--border2);
+      border-top: none;
     }
 
-    /* ── Sidebar ── */
+    /* ── SIDEBAR ── */
     .sidebar {
-      background: var(--side-bg);
-      border-right: 1px solid var(--rule);
-      padding: 48px 28px 48px 36px;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      padding: 40px 24px 40px 32px;
     }
 
     .side-section + .side-section {
-      margin-top: 38px;
-      padding-top: 38px;
-      border-top: 1px solid var(--rule);
+      margin-top: 36px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
     }
 
     .side-label {
-      font-family: "DM Mono", monospace;
-      font-size: 9.5px;
-      letter-spacing: 0.18em;
+      font-family: "Share Tech Mono", monospace;
+      font-size: 9px;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 16px;
+      color: var(--cyan);
+      margin-bottom: 18px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
+    .side-label::before { content: "//"; opacity: 0.6; }
     .side-label::after {
       content: "";
       flex: 1;
       height: 1px;
-      background: linear-gradient(90deg, var(--gold-pale), transparent);
+      background: linear-gradient(90deg, var(--cyan-faint), transparent);
     }
 
-    /* advantages */
     .adv-list { list-style: none; }
 
     .adv-list li {
-      font-size: 12.5px;
-      color: var(--mid);
-      line-height: 1.75;
-      padding-left: 14px;
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.8;
+      padding-left: 16px;
       position: relative;
       margin-bottom: 10px;
     }
 
     .adv-list li::before {
-      content: "◆";
+      content: "▸";
       position: absolute;
       left: 0;
-      font-size: 5px;
-      top: 7px;
-      color: var(--gold);
+      color: var(--cyan-dim);
+      font-size: 10px;
+      top: 3px;
     }
 
-    /* edu */
-    .edu-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 4px;
-    }
-
-    .edu-detail {
-      font-size: 12px;
-      color: var(--faint);
-      line-height: 1.7;
-    }
-
-    /* ai */
     .ai-list { list-style: none; }
 
     .ai-list li {
-      font-size: 12.5px;
-      color: var(--mid);
-      line-height: 1.75;
-      padding-left: 14px;
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.8;
+      padding-left: 16px;
       position: relative;
       margin-bottom: 10px;
     }
 
     .ai-list li::before {
-      content: "▸";
+      content: "›";
       position: absolute;
       left: 0;
-      color: var(--forest-l);
+      color: var(--amber);
+      font-size: 13px;
+      top: 1px;
+    }
+
+    .edu-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .edu-detail {
+      font-family: "Share Tech Mono", monospace;
       font-size: 11px;
+      color: var(--text-faint);
+      line-height: 1.9;
     }
 
-    /* ── Main ── */
+    /* ── MAIN ── */
     .main {
-      padding: 48px 52px 52px;
+      padding: 44px 52px 52px;
+      background: var(--bg2);
     }
 
-    .main-section + .main-section {
-      margin-top: 44px;
-    }
+    .main-section + .main-section { margin-top: 48px; }
 
     .section-head {
       display: flex;
       align-items: center;
       gap: 14px;
-      margin-bottom: 28px;
+      margin-bottom: 30px;
+    }
+
+    .section-tag {
+      font-family: "Share Tech Mono", monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.18em;
+      color: var(--amber);
+      padding: 2px 8px;
+      border: 1px solid rgba(255,184,0,0.25);
+      background: rgba(255,184,0,0.05);
     }
 
     .section-head h2 {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 22px;
-      font-weight: 400;
-      letter-spacing: 0.04em;
-      color: var(--forest);
+      font-family: "Rajdhani", sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--text);
+      text-transform: uppercase;
     }
 
     .section-line {
       flex: 1;
       height: 1px;
-      background: linear-gradient(90deg, var(--rule), transparent);
-    }
-
-    .section-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--gold);
-      box-shadow: 0 0 6px rgba(201,168,76,0.5);
-      flex-shrink: 0;
+      background: linear-gradient(90deg, var(--border2), transparent);
     }
 
     /* jobs */
     .job + .job {
-      margin-top: 32px;
-      padding-top: 32px;
-      border-top: 1px dashed var(--rule);
+      margin-top: 36px;
+      padding-top: 36px;
+      border-top: 1px solid var(--border);
     }
 
     .job-head {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       gap: 16px;
     }
 
     .job-company {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--forest-d);
-      letter-spacing: 0.02em;
+      font-family: "Rajdhani", sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--cyan);
+      text-shadow: 0 0 12px rgba(0,255,225,0.3);
     }
 
     .job-date {
-      font-family: "DM Mono", monospace;
+      font-family: "Share Tech Mono", monospace;
       font-size: 11px;
-      color: var(--gold);
-      letter-spacing: 0.08em;
+      color: var(--amber);
+      letter-spacing: 0.1em;
+      padding: 3px 12px;
+      border: 1px solid rgba(255,184,0,0.3);
+      background: rgba(255,184,0,0.04);
       white-space: nowrap;
-      padding: 2px 10px;
-      border: 1px solid var(--gold-pale);
-      border-radius: 2px;
-      background: #fffdf6;
       flex-shrink: 0;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
     }
 
     .job-role {
-      font-size: 13px;
-      color: var(--faint);
-      margin-bottom: 14px;
-      letter-spacing: 0.02em;
+      font-family: "Share Tech Mono", monospace;
+      font-size: 11px;
+      color: var(--text-faint);
+      letter-spacing: 0.1em;
+      margin-bottom: 18px;
     }
 
     .bullets { list-style: none; }
 
     .bullets li {
-      font-size: 13.5px;
-      color: #3a4e44;
-      line-height: 1.8;
-      padding-left: 18px;
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.9;
+      padding-left: 20px;
       position: relative;
-      margin-bottom: 7px;
+      margin-bottom: 8px;
     }
 
     .bullets li::before {
       content: "";
       position: absolute;
-      left: 0;
-      top: 11px;
-      width: 6px;
-      height: 1px;
-      background: var(--gold);
+      left: 0; top: 12px;
+      width: 10px; height: 1px;
+      background: linear-gradient(90deg, var(--cyan-dim), transparent);
     }
 
-    /* ── Footer strip ── */
+    /* highlight keywords */
+    .bullets li strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    /* ── FOOTER ── */
     .footer-strip {
-      height: 4px;
-      background: linear-gradient(90deg, var(--forest-d), var(--forest-l) 50%, var(--gold) 100%);
+      height: 3px;
+      background: linear-gradient(90deg, transparent 0%, var(--cyan-dim) 20%, var(--blue-dim) 50%, var(--amber-dim) 80%, transparent 100%);
+      box-shadow: 0 0 12px rgba(0,255,225,0.4);
     }
 
     /* ── Responsive ── */
-    @media (max-width: 780px) {
-      .page { margin: 0; border-radius: 0; }
-      .hero { padding: 36px 24px 32px; }
+    @media (max-width: 760px) {
+      .page { margin: 0; }
+      .hero { padding: 32px 20px 28px; }
       .body { grid-template-columns: 1fr; }
-      .sidebar { border-right: none; border-bottom: 1px solid var(--rule); padding: 32px 24px; }
-      .main { padding: 32px 24px 40px; }
-      .job-head { flex-direction: column; gap: 8px; }
+      .sidebar { border-right: none; border-bottom: 1px solid var(--border); padding: 28px 20px; }
+      .main { padding: 28px 20px 36px; }
+      .job-head { flex-direction: column; gap: 6px; }
     }
 
     @media print {
-      body { background: #fff; }
-      .page { margin: 0; box-shadow: none; border-radius: 0; }
-      .hero { padding: 36px 42px 30px; }
-      .body { grid-template-columns: 200px 1fr; }
-      .main { padding: 36px 42px 42px; }
-      .sidebar { padding: 36px 24px 36px 32px; }
-      .hero .scanline { display: none; }
+      body { background: #040d12; background-image: none; }
+      body::before, body::after { display: none; }
+      .page { margin: 0; }
+      .hero { padding: 36px 40px 30px; }
+      .main { padding: 32px 40px 40px; }
     }
   </style>
 </head>
@@ -409,21 +517,36 @@
 
   <!-- Hero -->
   <header class="hero">
-    <div class="scanline"></div>
+    <div class="hero-hud">
+      <div class="hud-live"><div class="hud-dot"></div>SYS ONLINE</div>
+      <div>VER 2025.05</div>
+      <div>EXP 15Y+</div>
+    </div>
     <div class="hero-inner">
-      <h1 class="name"><em>曹</em>鑫</h1>
+      <div class="sys-id">PROFILE_ID :: FULLSTACK_ARCH :: NODE_00X</div>
+      <h1 class="name"><span class="name-cn">曹鑫</span></h1>
       <div class="role-strip">
-        <div class="role-text">全栈开发工程师 &nbsp;·&nbsp; 前端架构师</div>
+        <span class="role-bracket">[ <span>全栈开发工程师</span> &nbsp;·&nbsp; <span>前端架构师</span> ]</span>
       </div>
       <p class="summary-hero">
         15年+ 软件开发经验，具备 React / TypeScript 前端架构、Node.js / Java 后端开发与云原生全栈能力。曾在腾讯云智担任部门长沙前端负责人，带领最多 14 人前端团队，主导微前端改造、部署流程优化、组件库建设与 Node.js 接入层落地。熟悉云原生开发范式，对容器化、微服务架构与持续交付有深入实践，注重服务高性能与高可用保障。熟练使用 Figma 进行产品原型设计，曾从 0 落地 BiuPa 页面效果平台。近期持续实践 AI 编程工作流，熟练使用 Cursor、Claude Code、Codex 等工具。
       </p>
       <div class="contacts">
-        <span class="contact-pill">📞 18684965870</span>
-        <span class="contact-pill">✉️ jianxue_jing@qq.com</span>
+        <span class="contact-pill">18684965870</span>
+        <span class="contact-pill">jianxue_jing@qq.com</span>
       </div>
     </div>
   </header>
+
+  <!-- Status bar -->
+  <div class="status-bar">
+    <span class="sb-item sb-active">● ACTIVE</span>
+    <span class="sb-sep">|</span>
+    <span class="sb-item">STACK: React · TypeScript · Node.js · Java · Cloud-Native</span>
+    <span class="sb-sep">|</span>
+    <span class="sb-item">TEAM_MAX: 14</span>
+    <span class="sb-right">READY_FOR_DEPLOY</span>
+  </div>
 
   <!-- Body -->
   <div class="body">
@@ -468,17 +591,17 @@
 
       <div class="main-section">
         <div class="section-head">
-          <div class="section-dot"></div>
+          <div class="section-tag">RECORD</div>
           <h2>工作经历</h2>
           <div class="section-line"></div>
         </div>
 
         <div class="job">
           <div class="job-head">
-            <div class="job-company">腾讯云智</div>
+            <div class="job-company">腾讯云与智慧产业研发公司</div>
             <div class="job-date">2019 — 2025</div>
           </div>
-          <div class="job-role">部门长沙前端负责人</div>
+          <div class="job-role">// 部门长沙前端负责人</div>
           <ul class="bullets">
             <li>负责长沙前端团队技术建设与架构规划，团队规模最多 14 人，统筹工程规范制定与项目交付管理。</li>
             <li>主导 BiuPa 页面效果平台从 0 到 1 落地，覆盖产品原型、架构设计、核心开发与上线运维全流程。</li>
@@ -496,7 +619,7 @@
             <div class="job-company">湖南科创信息股份有限公司</div>
             <div class="job-date">2011 — 2019</div>
           </div>
-          <div class="job-role">前端负责人 / Java 开发工程师</div>
+          <div class="job-role">// 前端负责人 / Java 开发工程师</div>
           <ul class="bullets">
             <li>早期担任 Java 开发工程师，参与电子政务业务系统研发，积累复杂业务建模与后端接口开发经验。</li>
             <li>后转岗基础软件研究院，从 0 搭建前端团队，建立开发流程、技术选型与代码规范体系。</li>
@@ -504,8 +627,24 @@
             <li>协同后端、产品、测试与实施团队推进项目交付，具备从需求到上线的完整项目经验。</li>
           </ul>
         </div>
+
       </div>
 
+      <div class="main-section">
+        <div class="section-head">
+          <div class="section-tag">HONORS</div>
+          <h2>荣誉与激励</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div class="job">
+          <ul class="bullets">
+            <li>在科创信息，评选过优秀员工；入选公司核心技术人员名单，享受公司股权激励。</li>
+            <li>在腾讯云智，累计获得 3 次四星员工评级，2 次 S 绩效。获取过股权激励</li>
+          </ul>
+        </div>
+
+      </div>
     </div>
   </div>
 
